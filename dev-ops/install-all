@@ -6,7 +6,8 @@ sudo apt install mongodb-org -y &&
 sudo systemctl start mongod.service && 
 sudo systemctl enable mongod && 
 echo "Waiting 10 Seconds for MongoDB" && 
-sleep 10 && MONGOPASSWORD="$(echo $RANDOM | md5sum | head -c 32)" && 
+sleep 10 &&
+MONGOPASSWORD="$(echo $RANDOM | md5sum | head -c 32)" && 
 mongo admin --eval "db.createUser({ user: \"admin\",  pwd: \"$MONGOPASSWORD\",  roles: [\"root\"] })" && 
 echo "security:" | sudo tee -a /etc/mongod.conf && 
 echo "  authorization: enabled" | sudo tee -a /etc/mongod.conf && 
