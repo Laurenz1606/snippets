@@ -1,0 +1,8 @@
+db.createUser({
+  user: '<some username>',
+  pwd: passwordPrompt(),
+  roles: [{
+    role: 'readWrite',
+    db: '<your database>'
+  }]
+})
