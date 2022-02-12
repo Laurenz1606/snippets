@@ -1,0 +1,35 @@
+server {
+            root /var/www/DOMAIN;
+            index index.php;
+            server_name DOMAIN;
+            listen 80;
+
+            location / { 
+                         try_files $uri $uri/ /index.php?$args; 
+            }
+
+            location ~ \.php$ {
+                         include snippets/fastcgi-php.conf;
+                         fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+            }
+            
+            location ~ /\.ht {
+                         deny all;
+            }
+
+            location = /favicon.ico {
+                         log_not_found off;
+                         access_log off;
+            }
+
+            location = /robots.txt {
+                         allow all;
+                         log_not_found off;
+                         access_log off;
+           }
+       
+            location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+                         expires max;
+                         log_not_found off;
+           }
+}
