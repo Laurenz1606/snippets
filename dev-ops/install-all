@@ -25,13 +25,31 @@ sudo bash nodesource_setup.sh &&
 sudo apt install nodejs -y && 
 sudo apt update && 
 sudo npm install -g yarn && 
+sudo yarn global add pm2 && 
 sudo apt install nginx -y && 
 sudo apt update && 
 sudo apt install python3-certbot-nginx -y && 
 sudo apt install git -y && 
 sudo apt update && 
-echo "================================================" && 
-echo "Redis Password: ${REDISPASSWORD}" && 
-echo "================================================" && 
-echo "Mongo Password: ${MONGOPASSWORD}" && 
-echo "================================================"
+ROOTPASSWORD="$(echo $RANDOM | md5sum | head -c 32)" && 
+chpasswd <<< "root:$ROOTPASSWORD" && 
+DEVPASSWORD="$(echo $RANDOM | md5sum | head -c 32)" && 
+adduser --gecos "" --disabled-password dev && 
+sudo usermod -aG sudo dev && 
+chpasswd <<<"dev:$DEVPASSWORD" && 
+SPACE=" " && LENGTH="" && for((i=1;i<=32-$(expr length $(hostname -I));i+=1)); do LENGTH="$LENGTH$SPACE"; done && 
+echo "--------------------------------------------------------------" && 
+echo "| Info:       IP-Address: $(hostname -I) $LENGTH |" && 
+echo "|                                                            |" && 
+echo "| added (+):  htop, net-tools, mongodb, redis, nodejs, npm   |" && 
+echo "|             yarn, pm2, nginx, certbot, git                 |" && 
+echo "|                                                            |" && 
+echo "| configured: mongodb, redis, ubuntu \"root\" , ubuntu \"dev\"   |" && 
+echo "--------------------------------------------------------------" && 
+echo "| Ubuntu:     root:   ${ROOTPASSWORD}       |" && 
+echo "|             dev:    ${DEVPASSWORD}       |" && 
+echo "--------------------------------------------------------------" && 
+echo "| Redis:      pass:   ${REDISPASSWORD}       |" && 
+echo "--------------------------------------------------------------" && 
+echo "| MongoDB:    admin:  ${MONGOPASSWORD}       |" && 
+echo "--------------------------------------------------------------"
